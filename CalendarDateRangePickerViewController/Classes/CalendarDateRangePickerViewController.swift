@@ -53,16 +53,14 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
             maximumDate = Calendar.current.date(byAdding: .year, value: 1, to: minimumDate)
         }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(CalendarDateRangePickerViewController.didTapCancel))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(CalendarDateRangePickerViewController.didTapDone))
         self.navigationItem.rightBarButtonItem?.isEnabled = selectedStartDate != nil && selectedEndDate != nil
     }
     
-    @objc func didTapCancel() {
+    public func didTapCancel() {
         delegate.didCancelPickingDateRange()
     }
     
-    @objc func didTapDone() {
+    public func didTapDone() {
         if selectedStartDate == nil || selectedEndDate == nil {
             return
         }
