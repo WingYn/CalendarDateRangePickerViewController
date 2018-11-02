@@ -20,9 +20,9 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     
     public var delegate: CalendarDateRangePickerViewControllerDelegate!
     
-    let itemsPerRow = 7
-    let itemHeight: CGFloat = 40
-    let collectionViewInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
+    let itemsPerRow = 6
+    let itemHeight: CGFloat = 60
+    let collectionViewInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     
     public var minimumDate: Date!
     public var maximumDate: Date!
@@ -222,7 +222,7 @@ extension CalendarDateRangePickerViewController {
         var components = DateComponents()
         components.calendar = Calendar.current
         components.weekday = weekday
-        let date = Calendar.current.nextDate(after: Date(), matching: components, matchingPolicy: Calendar.MatchingPolicy.strict)
+        let date = Calendar.current.nextDate(after: Date(), matching: components, matchingPolicy: .strict)
         if date == nil {
             return "E"
         }
@@ -242,11 +242,11 @@ extension CalendarDateRangePickerViewController {
     }
     
     func areSameDay(dateA: Date, dateB: Date) -> Bool {
-        return Calendar.current.compare(dateA, to: dateB, toGranularity: .day) == ComparisonResult.orderedSame
+        return Calendar.current.compare(dateA, to: dateB, toGranularity: .day) == .orderedSame
     }
     
     func isBefore(dateA: Date, dateB: Date) -> Bool {
-        return Calendar.current.compare(dateA, to: dateB, toGranularity: .month) == ComparisonResult.orderedAscending
+        return Calendar.current.compare(dateA, to: dateB, toGranularity: .month) == .orderedAscending
     }
     
 }
