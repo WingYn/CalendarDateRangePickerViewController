@@ -71,40 +71,21 @@ extension CalendarDateRangePickerViewController {
     // UICollectionViewDataSource
     
     override public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        let difference = Calendar.current.dateComponents([.year], from: minimumDate, to: maximumDate)
-        return difference.year! + 1
+        return 2
     }
     
     override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.month], from: currentDate)
-        
-        if section == 0 {
-            return 12 - (components.month ?? 0) + 1
-        } else {
-            return 12
-        }
+        return 12
     }
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarDateRangePickerCell
         cell.selectedColor = self.selectedColor
         cell.reset()
-        
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month], from: currentDate)
 
         let dayOfMonth = indexPath.item
 
-        let date: Date!
-        
-        if let month = components.month, indexPath.section == 0 {
-            date = getDate(month: month + indexPath.item, section: indexPath.section)
-        } else {
-            date = getDate(month: dayOfMonth + 1, section: indexPath.section)
-        }
+        let date = getDate(month: dayOfMonth + 1, section: indexPath.section)
     
         cell.date = date
         let dateFormatter = DateFormatter()
@@ -112,6 +93,10 @@ extension CalendarDateRangePickerViewController {
         let nameOfMonth = dateFormatter.string(from: date)
         
         cell.label.text = nameOfMonth
+        
+        if isBefore(dateA: date, dateB: minimumDate) {
+            cell.disable()
+        }
 
         if selectedStartDate != nil && selectedEndDate != nil && isBefore(dateA: selectedStartDate!, dateB: date) && isBefore(dateA: date, dateB: selectedEndDate!) {
             // Cell falls within selected range
@@ -151,6 +136,9 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
     override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarDateRangePickerCell
         if cell.date == nil {
+            return
+        }
+        if isBefore(dateA: cell.date!, dateB: minimumDate) {
             return
         }
         if selectedStartDate == nil {
