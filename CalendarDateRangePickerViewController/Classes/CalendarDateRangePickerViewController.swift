@@ -97,7 +97,7 @@ extension CalendarDateRangePickerViewController {
         let dayOfMonth = indexPath.item
 
         let date = getDate(month: dayOfMonth + 1, section: indexPath.section)
-    
+
         cell.date = date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLL"
@@ -112,13 +112,13 @@ extension CalendarDateRangePickerViewController {
             } else {
                 cell.highlight()
             }
-        } else if selectedStartDate != nil && areSameDay(dateA: date, dateB: selectedStartDate!) {
+        } else if selectedStartDate != nil && isBefore(dateA: date, dateB: selectedStartDate!) {
             // Cell is selected start date
             cell.select()
             if selectedEndDate != nil {
                 cell.highlightRight()
             }
-        } else if selectedEndDate != nil && areSameDay(dateA: date, dateB: selectedEndDate!) {
+        } else if selectedEndDate != nil && isBefore(dateA: date, dateB: selectedEndDate!) {
             cell.select()
             cell.highlightLeft()
         }
@@ -227,10 +227,6 @@ extension CalendarDateRangePickerViewController {
         var components = calendar.dateComponents([.month, .year], from: getFirstDateForSection(section: section))
         components.month = month
         return calendar.date(from: components)!
-    }
-    
-    func areSameDay(dateA: Date, dateB: Date) -> Bool {
-        return calendar.compare(dateA, to: dateB, toGranularity: .day) == .orderedSame
     }
     
     func isBefore(dateA: Date, dateB: Date) -> Bool {
