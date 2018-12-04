@@ -47,10 +47,13 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         collectionView?.contentInset = collectionViewInsets
         
         if minimumDate == nil {
-            minimumDate = Date()
+            minimumDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())
         }
+        
         if maximumDate == nil {
-            maximumDate = Calendar.current.date(byAdding: .year, value: 1, to: minimumDate)
+            maximumDate = Calendar.current.date(byAdding: .year, value: 2, to: minimumDate)
+            
+            print(maximumDate)
         }
         
         self.navigationItem.rightBarButtonItem?.isEnabled = selectedStartDate != nil && selectedEndDate != nil
@@ -71,7 +74,7 @@ extension CalendarDateRangePickerViewController {
     // UICollectionViewDataSource
     
     override public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
     
     override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -94,10 +97,6 @@ extension CalendarDateRangePickerViewController {
         
         cell.label.text = nameOfMonth
         
-        if isBefore(dateA: date, dateB: minimumDate) {
-            cell.disable()
-        }
-
         if selectedStartDate != nil && selectedEndDate != nil && isBefore(dateA: selectedStartDate!, dateB: date) && isBefore(dateA: date, dateB: selectedEndDate!) {
             // Cell falls within selected range
             if dayOfMonth == getNumberOfDaysInMonth(date: date) {
@@ -138,9 +137,7 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
         if cell.date == nil {
             return
         }
-        if isBefore(dateA: cell.date!, dateB: minimumDate) {
-            return
-        }
+
         if selectedStartDate == nil {
             selectedStartDate = cell.date
         } else if selectedEndDate == nil {
