@@ -37,6 +37,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     
     public var showNumberOfPreviousYears = -1
     public var disablePreviousMonths = false
+    public var dateRangePickerFutureYears = 2
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +61,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         }
         
         if maximumDate == nil {
-            maximumDate = calendar.date(byAdding: .year, value: 2, to: minimumDate)
+            maximumDate = calendar.date(byAdding: .year, value: dateRangePickerFutureYears, to: minimumDate)
         }
         
         self.navigationItem.rightBarButtonItem?.isEnabled = selectedStartDate != nil && selectedEndDate != nil
