@@ -86,7 +86,7 @@ extension CalendarDateRangePickerViewController {
     // UICollectionViewDataSource
     
     override public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return (calendar.dateComponents([.year], from: minimumDate, to: maximumDate).year ?? 0) + 1
     }
     
     override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
