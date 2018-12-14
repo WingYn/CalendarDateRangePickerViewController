@@ -35,6 +35,9 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
 
     var calendar = Calendar.current
     
+    public var showNumberOfPreviousYears = -1
+    public var disablePreviousMonths = false
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,7 +56,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         }
 
         if minimumDate == nil {
-            minimumDate = calendar.date(byAdding: .year, value: -1, to: Date())
+            minimumDate = calendar.date(byAdding: .year, value: showNumberOfPreviousYears, to: Date())
         }
         
         if maximumDate == nil {
@@ -105,6 +108,12 @@ extension CalendarDateRangePickerViewController {
         
         cell.label.text = nameOfMonth
         
+        if disablePreviousMonths {
+            if isBefore(dateA: date, dateB: minimumDate) {
+                cell.disable()
+            }
+        }
+        
         if selectedStartDate != nil && selectedEndDate != nil && isBefore(dateA: selectedStartDate!, dateB: date) && isBefore(dateA: date, dateB: selectedEndDate!) {
             // Cell falls within selected range
             if dayOfMonth == getNumberOfDaysInMonth(date: date) {
@@ -144,6 +153,12 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
         let cell = collectionView.cellForItem(at: indexPath) as! CalendarDateRangePickerCell
         if cell.date == nil {
             return
+        }
+        
+        if disablePreviousMonths {
+            if isBefore(dateA: cell.date!, dateB: minimumDate) {
+                return
+            }
         }
 
         if selectedStartDate == nil {
