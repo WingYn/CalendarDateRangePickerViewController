@@ -105,6 +105,7 @@ extension CalendarDateRangePickerViewController {
         cell.date = date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLL"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         let nameOfMonth = dateFormatter.string(from: date)
         
         cell.label.text = nameOfMonth
