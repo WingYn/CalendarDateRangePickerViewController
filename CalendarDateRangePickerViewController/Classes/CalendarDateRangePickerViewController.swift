@@ -218,6 +218,7 @@ extension CalendarDateRangePickerViewController {
     
     func getMonthLabel(date: Date) -> String {
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         dateFormatter.dateFormat = "yyyy"
         return dateFormatter.string(from: date)
     }
